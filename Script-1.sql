@@ -1,9 +1,16 @@
-CREATE table if not EXISTS genres (
+CREATE TABLE IF NOT EXISTS genres (
   genreid SERIAL PRIMARY KEY,
   name VARCHAR(50) NOT NULL
 );
 
-CREATE table if not EXISTS artists (
+CREATE TABLE artist_genre (
+    artistid INT REFERENCES artists(artistid),
+    genreid INT REFERENCES genres(genreid)
+);
+
+ALTER TABLE artists ADD FOREIGN KEY (genreid) REFERENCES genre_artist(genreid);
+
+CREATE TABLE artists (
   artistid SERIAL PRIMARY KEY,
   name VARCHAR(100),
   genres JSONB
@@ -15,6 +22,13 @@ CREATE table if not EXISTS albums (
   releaseyear INT NOT NULL,
   artists JSONB
 );
+
+CREATE TABLE IF NOT EXISTS album_artist (
+  artistid INT REFERENCES artists(artistid),
+  albumid INT REFERENCES albums(albumid)
+);
+
+ALTER TABLE albums ADD FOREIGN KEY (artistid) REFERENCES album_artist(artistid);
 
 CREATE table if not EXISTS tracks (
   trackid SERIAL PRIMARY KEY,
